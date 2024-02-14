@@ -23,7 +23,7 @@
 ### Initial Laravel Setup 
 
 1) Follow the standard laravel installation procedure if this is for production you can follow this guide: https://laravel.com/docs/10.x/deployment
-2) Copy your .env.example to .env and fill out the APP_NAME, APP_URL, and all the DB_ fields
+2) Copy your .env.example to .env and fill out the APP_NAME, APP_URL, and all the DB_ fields, and MAIL_
 3) If in production also set APP_DEBUG to false
 4) Don't forget to generate an application key:
 
