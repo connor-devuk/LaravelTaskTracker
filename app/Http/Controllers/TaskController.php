@@ -37,6 +37,16 @@ class TaskController extends Controller
 
         return redirect()->back()->with('success', 'Task updated successfully.');
     }
+    public function status(Task $task, $status)
+    {
+        if($task->user_id !== auth()->user()->id) {
+            return redirect()->back()->with('error', 'This task does not belong to you!.');
+        }
+
+        $task->update(['status' => $status]);
+
+        return redirect()->back()->with('success', 'Task updated successfully.');
+    }
 
     public function destroy(Task $task)
     {
