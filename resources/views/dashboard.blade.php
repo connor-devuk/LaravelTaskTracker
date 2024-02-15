@@ -33,7 +33,12 @@
                                 <div class="flex flex-col md:flex-row md:flex-wrap">
                                     <i class="fa-light fa-circle-check mt-2 {{ ($task->status === 'complete') ? 'text-green-500' : 'text-gray-400' }}"></i>
                                     <div class="text-white text-xl font-semibold ml-2">
-                                        <small class="mb-1">{{ $task->name }}</small>
+                                        <small class="mb-1">
+                                            {{ $task->name }}
+                                            <a href="#" class="ml-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-[#e4ff4a] rounded-md focus:outline-none" onclick="editTask({{$task->id}})" x-data="" x-on:click.prevent="$dispatch('open-modal', 'edit-task')">
+                                                <i class="fa-light fa-pen-to-square"></i>
+                                            </a>
+                                        </small>
                                     </div>
                                     <div class="date mb-auto ml-auto text-end">
                                         <p class="text-white mb-3">
@@ -119,7 +124,93 @@
             </div>
         </form>
     </x-modal>
-    <script>
 
+    <x-modal name="edit-task" :show="$errors->taskUpdate->isNotEmpty()" focusable>
+        <form method="post" action="#" class="p-6" id="edit-task">
+            <h4 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight my-auto">
+                {{ __('Edit Task') }}
+            </h4>
+            @csrf
+            @method('patch')
+
+            <div class="mt-6">
+                <x-input-label for="edit_name" value="{{ __('Title') }}"/>
+
+                <x-text-input
+                    id="edit_name"
+                    name="name"
+                    type="text"
+                    class="mt-3 block w-3/4"
+                    placeholder="{{ __('Cook dinner') }}"
+                    required
+                />
+
+                <x-input-error :messages="$errors->taskUpdate->get('name')" class="mt-2" />
+            </div>
+            <div class="mt-6">
+                <x-input-label for="edit_description" value="{{ __('Description') }}"/>
+
+                <x-text-input
+                    id="edit_description"
+                    name="description"
+                    type="text"
+                    class="mt-3 block w-3/4"
+                    placeholder="{{ __('Preheat the oven to 120 degrees and put pizza inside!') }}"
+                    required
+                />
+
+                <x-input-error :messages="$errors->taskUpdate->get('description')" class="mt-2"/>
+            </div>
+            <div class="mt-6">
+                <x-input-label for="edit_due_by" value="{{ __('Due Date') }}"/>
+
+                <x-text-input
+                    id="edit_due_by"
+                    name="due_by"
+                    type="date"
+                    class="mt-3 block w-3/4"
+                    placeholder="{{ __('DD/MM/YYYY') }}"
+                    required
+                />
+
+                <x-input-error :messages="$errors->taskUpdate->get('due_by')" class="mt-2"/>
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-primary-button class="ms-3">
+                    {{ __('Submit') }}
+                </x-primary-button>
+            </div>
+        </form>
+    </x-modal>
+    <script>
+        const tasks = @json(auth()->user()->tasks)
+
+        function editTask(id) {
+            const task = tasks.find(task => task.id === id);
+            if (task) {
+                console.log("Task found for id:", formatDate(task.due_by));
+
+                document.getElementById('edit_name').value = task.name;
+                document.getElementById('edit_description').value = task.description;
+                document.getElementById('edit_due_by').value = formatDate(task.due_by);
+
+                document.getElementById('edit-task').action = "/tasks/" + id;
+            } else {
+                console.log("Task not found for id:", id);
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-based
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
     </script>
 </x-app-layout>

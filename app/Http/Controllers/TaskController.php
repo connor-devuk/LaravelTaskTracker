@@ -27,10 +27,9 @@ class TaskController extends Controller
         }
 
         $validated  = $request->validateWithBag('taskUpdate', [
-            'name' => 'sometimes|string|max:180',
-            'description' => 'sometimes|string|max:500',
-            'status' => 'sometimes|in:pending,complete,overdue',
-            'due_by' => 'sometimes|date_format:d/m/Y',
+            'name' => 'required|string|max:180',
+            'description' => 'required|string|max:500',
+            'due_by' => 'required|date_format:Y-m-d',
         ]);
 
         $task->update($validated);
