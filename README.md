@@ -36,3 +36,7 @@ php artisan key:generate
 ```bash
 php artisan migrate
 ```
+
+```bash
+npm run build
+```
