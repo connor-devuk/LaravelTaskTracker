@@ -9,10 +9,10 @@ class TaskController extends Controller
 {
     public function store(Request $request)
     {
-        $validated  = $request->validate([
+        $validated  = $request->validateWithBag('taskCreation', [
             'name' => 'required|string|max:180',
             'description' => 'required|string|max:500',
-            'due_by' => 'required|date_format:d/m/Y',
+            'due_by' => 'required|date_format:Y-m-d',
         ]);
 
         Task::create($validated);
@@ -22,7 +22,7 @@ class TaskController extends Controller
 
     public function update(Request $request, Task $task)
     {
-        $validated  = $request->validate([
+        $validated  = $request->validateWithBag('taskUpdate', [
             'name' => 'required|string|max:180',
             'description' => 'required|string|max:500',
             'status' => 'required|in:pending,complete,overdue',

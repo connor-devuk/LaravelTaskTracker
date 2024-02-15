@@ -58,18 +58,18 @@
             @csrf
 
             <div class="mt-6">
-                <x-input-label for="title" value="{{ __('Title') }}"/>
+                <x-input-label for="name" value="{{ __('Title') }}"/>
 
                 <x-text-input
-                    id="title"
-                    name="title"
+                    id="name"
+                    name="name"
                     type="text"
                     class="mt-3 block w-3/4"
                     placeholder="{{ __('Cook dinner') }}"
                     required
                 />
 
-                <x-input-error :messages="$errors->userDeletion->get('title')" class="mt-2" />
+                <x-input-error :messages="$errors->taskCreation->get('name')" class="mt-2" />
             </div>
             <div class="mt-6">
                 <x-input-label for="description" value="{{ __('Description') }}"/>
@@ -83,7 +83,7 @@
                     required
                 />
 
-                <x-input-error :messages="$errors->userDeletion->get('description')" class="mt-2"/>
+                <x-input-error :messages="$errors->taskCreation->get('description')" class="mt-2"/>
             </div>
             <div class="mt-6">
                 <x-input-label for="due_by" value="{{ __('Due Date') }}"/>
@@ -93,11 +93,11 @@
                     name="due_by"
                     type="date"
                     class="mt-3 block w-3/4"
-                    placeholder="{{ __('DD/MM/YY') }}"
+                    placeholder="{{ __('DD/MM/YYYY') }}"
                     required
                 />
 
-                <x-input-error :messages="$errors->userDeletion->get('due_by')" class="mt-2"/>
+                <x-input-error :messages="$errors->taskCreation->get('due_by')" class="mt-2"/>
             </div>
 
             <div class="mt-6 flex justify-end">
