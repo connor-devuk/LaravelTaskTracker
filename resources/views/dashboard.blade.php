@@ -30,7 +30,7 @@
                     @foreach(auth()->user()->tasks as $task)
                         <li class="task-card {{ ($task->status === 'complete') ? 'completed' : '' }} border-b border-gray-100 dark:border-gray-700" id="{{$task->id}}">
                             <div class="flex flex-col md:flex-row md:flex-wrap">
-                                <i class="fa-light fa-circle-check text-gray-400 mt-2"></i>
+                                <i class="fa-light fa-circle-check mt-2 {{ ($task->status === 'complete') ? 'text-green-500' : 'text-gray-400' }}"></i>
                                 <div class="text-white text-xl font-semibold ml-2">
                                     <small class="mb-1">{{ $task->name }}</small>
                                 </div>
