@@ -29,26 +29,28 @@
                 <ul class="task-list list-none p-0 m-0 max-h-[500px] overflow-y-scroll flex flex-col rounded-md">
                     @foreach(auth()->user()->tasks as $task)
                         <li class="task-card {{ ($task->status === 'complete') ? 'dark:bg-[#242424]' : '' }} border-b border-gray-100 dark:border-gray-700 dark:hover:bg-[#242424] py-4 px-5" id="{{$task->id}}">
-                            <div class="flex flex-col md:flex-row md:flex-wrap">
-                                <i class="fa-light fa-circle-check mt-2 {{ ($task->status === 'complete') ? 'text-green-500' : 'text-gray-400' }}"></i>
-                                <div class="text-white text-xl font-semibold ml-2">
-                                    <small class="mb-1">{{ $task->name }}</small>
-                                </div>
-                                <div class="date mb-auto ml-auto text-end">
-                                    <p class="text-white mb-3">
-                                        Due {{ \Carbon\Carbon::parse($task->due_by)->diffForHumans(['parts' => 1]) }}</p>
-                                    <span
-                                        class="bg-red-700 text-white p-1 rounded font-semibold text-sm {{ (Carbon\Carbon::parse($task->due_by)->isPast()) ? '' : 'hidden' }}">Overdue</span>
-                                   @if($task->status === 'completed')
-                                    <span
-                                        class="badge bg-success">Completed</span>
-                                    @endif
-                                </div>
+                            <a href="{{ route('tasks.update.status', ['task' => $task->id, 'status' => ($task->status === 'complete') ? 'pending' : 'complete']) }}">
+                                <div class="flex flex-col md:flex-row md:flex-wrap">
+                                    <i class="fa-light fa-circle-check mt-2 {{ ($task->status === 'complete') ? 'text-green-500' : 'text-gray-400' }}"></i>
+                                    <div class="text-white text-xl font-semibold ml-2">
+                                        <small class="mb-1">{{ $task->name }}</small>
+                                    </div>
+                                    <div class="date mb-auto ml-auto text-end">
+                                        <p class="text-white mb-3">
+                                            Due {{ \Carbon\Carbon::parse($task->due_by)->diffForHumans(['parts' => 1]) }}</p>
+                                        <span
+                                            class="bg-red-700 text-white p-1 rounded font-semibold text-sm {{ ($task->status !== 'complete' && Carbon\Carbon::parse($task->due_by)->isPast()) ? '' : 'hidden' }}">Overdue</span>
+                                        @if($task->status === 'completed')
+                                            <span
+                                                class="badge bg-success">Completed</span>
+                                        @endif
+                                    </div>
 
-                                <div class="task-desc w-full mt-1">
-                                    <p class="font-regular text-md text-gray-800 dark:text-gray-300">{{$task->description}}</p>
+                                    <div class="task-desc w-full mt-1">
+                                        <p class="font-regular text-md text-gray-800 dark:text-gray-300">{{$task->description}}</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </li>
                     @endforeach
                 </ul>
@@ -117,5 +119,7 @@
             </div>
         </form>
     </x-modal>
+    <script>
 
+    </script>
 </x-app-layout>
