@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="pt-12 pb-6">
+    <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col md:flex-row md:flex-wrap">
             <img src="https://www.gravatar.com/avatar/{{ md5(auth()->user()->email) }}?s=48" alt="logo" class="rounded-full">
             <div class="user-info ml-3 my-auto">
@@ -26,9 +26,9 @@
             </div>
 
             <div class="task-box mt-3">
-                <ul class="task-list list-none p-0 m-0 max-h-[500px] overflow-y-scroll flex flex-col">
+                <ul class="task-list list-none p-0 m-0 max-h-[500px] overflow-y-scroll flex flex-col rounded-md">
                     @foreach(auth()->user()->tasks as $task)
-                        <li class="task-card {{ ($task->status === 'complete') ? 'completed' : '' }} border-b border-gray-100 dark:border-gray-700" id="{{$task->id}}">
+                        <li class="task-card {{ ($task->status === 'complete') ? 'dark:bg-[#242424]' : '' }} border-b border-gray-100 dark:border-gray-700 dark:hover:bg-[#242424] py-4 px-5" id="{{$task->id}}">
                             <div class="flex flex-col md:flex-row md:flex-wrap">
                                 <i class="fa-light fa-circle-check mt-2 {{ ($task->status === 'complete') ? 'text-green-500' : 'text-gray-400' }}"></i>
                                 <div class="text-white text-xl font-semibold ml-2">
