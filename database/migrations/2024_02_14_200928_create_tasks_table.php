@@ -12,7 +12,6 @@ return new class extends Migration {
             $table->string('name');
             $table->string('description');
             $table->enum('status', ['pending', 'complete', 'overdue'])->default('pending');
-            $table->string('category');
             $table->timestamp('due_by');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
