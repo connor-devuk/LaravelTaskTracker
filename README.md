@@ -34,5 +34,5 @@ php artisan key:generate
 ### Application Setup
 
 ```bash
-php artisan app:setup
+php artisan migrate
 ```

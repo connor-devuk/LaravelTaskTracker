@@ -33,7 +33,7 @@
                                 <div class="flex flex-col md:flex-row md:flex-wrap">
                                     <i class="fa-light fa-circle-check mt-2 {{ ($task->status === 'complete') ? 'text-green-500' : 'text-gray-400' }}"></i>
                                     <div class="text-white text-xl font-semibold ml-2">
-                                        <small class="mb-1">
+                                        <small class="mb-1 {{ ($task->status === 'complete') ? 'line-through' : '' }}">
                                             {{ $task->name }}
                                             <a href="#" class="ml-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-[#e4ff4a] rounded-md focus:outline-none" onclick="editTask({{$task->id}})" x-data="" x-on:click.prevent="$dispatch('open-modal', 'edit-task')">
                                                 <i class="fa-light fa-pen-to-square"></i>
@@ -41,17 +41,18 @@
                                         </small>
                                     </div>
                                     <div class="date mb-auto ml-auto text-end">
-                                        <p class="text-white mb-3">
-                                            Due {{ \Carbon\Carbon::parse($task->due_by)->diffForHumans(['parts' => 1]) }}</p>
-                                        <span
-                                            class="bg-red-700 text-white p-1 rounded font-semibold text-sm {{ ($task->status !== 'complete' && Carbon\Carbon::parse($task->due_by)->isPast()) ? '' : 'hidden' }}">Overdue</span>
-                                        @if($task->status === 'completed')
+                                        @if($task->status === 'complete')
                                             <span
-                                                class="badge bg-success">Completed</span>
+                                                class="bg-green-500 text-white py-1 px-2 rounded font-semibold text-sm">Completed</span>
+                                        @else
+                                            <p class="text-white mb-3">
+                                                Due {{ \Carbon\Carbon::parse($task->due_by)->diffForHumans(['parts' => 1]) }}</p>
+                                            <span
+                                                class="bg-red-700 text-white py-1 px-2 rounded font-semibold text-sm {{ (Carbon\Carbon::parse($task->due_by)->isPast()) ? '' : 'hidden' }}">Overdue</span>
                                         @endif
                                     </div>
 
-                                    <div class="task-desc w-full mt-1">
+                                    <div class="task-desc w-full mt-1 {{ ($task->status === 'complete') ? 'line-through' : '' }}">
                                         <p class="font-regular text-md text-gray-800 dark:text-gray-300">{{$task->description}}</p>
                                     </div>
                                 </div>
@@ -177,11 +178,14 @@
             </div>
 
             <div class="mt-6 flex justify-end">
+                <x-danger-button class="mr-auto" id="delete-button" type="button">
+                    {{ __('Delete Task') }}
+                </x-danger-button>
                 <x-secondary-button x-on:click="$dispatch('close')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button class="ms-3">
+                <x-primary-button class="ms-3" type="submit">
                     {{ __('Submit') }}
                 </x-primary-button>
             </div>
@@ -193,13 +197,12 @@
         function editTask(id) {
             const task = tasks.find(task => task.id === id);
             if (task) {
-                console.log("Task found for id:", formatDate(task.due_by));
-
                 document.getElementById('edit_name').value = task.name;
                 document.getElementById('edit_description').value = task.description;
                 document.getElementById('edit_due_by').value = formatDate(task.due_by);
 
                 document.getElementById('edit-task').action = "/tasks/" + id;
+                document.getElementById('delete-task').action = "/tasks/" + id;
             } else {
                 console.log("Task not found for id:", id);
             }
@@ -212,5 +215,10 @@
             const day = String(date.getDate()).padStart(2, '0');
             return `${year}-${month}-${day}`;
         }
+
+        document.getElementById('delete-button').addEventListener('click', function() {
+            document.querySelector('input[name="_method"]').value = 'DELETE';
+            document.getElementById('edit-task').submit();
+        });
     </script>
 </x-app-layout>

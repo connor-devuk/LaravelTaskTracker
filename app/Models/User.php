@@ -45,6 +45,6 @@ class User extends Authenticatable
 
     public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Task::class)->orderBy('status');
     }
 }

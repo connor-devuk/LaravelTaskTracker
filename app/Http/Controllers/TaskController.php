@@ -54,6 +54,7 @@ class TaskController extends Controller
         }
 
         $task->delete();
-        return redirect()->back()>with('success', 'Task deleted successfully.');
+
+        return redirect()->back()->with('success', 'Task deleted successfully.');
     }
 }

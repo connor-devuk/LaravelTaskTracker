@@ -18,7 +18,7 @@ Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->mid
 Route::post('/tasks', [App\Http\Controllers\TaskController::class, 'store'])->middleware(['auth', 'verified'])->name('tasks.create');
 Route::patch('/tasks/{task}', [App\Http\Controllers\TaskController::class, 'update'])->middleware(['auth', 'verified'])->name('tasks.update');
 Route::get('/tasks/{task}/{status}', [App\Http\Controllers\TaskController::class, 'status'])->middleware(['auth', 'verified'])->name('tasks.update.status');
-Route::delete('/tasks/{task}', [App\Http\Controllers\TaskController::class, 'delete'])->middleware(['auth', 'verified'])->name('tasks.delete');
+Route::delete('/tasks/{task}', [App\Http\Controllers\TaskController::class, 'destroy'])->middleware(['auth', 'verified'])->name('tasks.delete');
 
 
 Route::middleware('auth')->group(function () {
