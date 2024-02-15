@@ -5,3 +5,15 @@
 input[type="date"]::-webkit-calendar-picker-indicator {
     color-scheme: dark;
 }
+
+ul.task-list li:first-child {
+    border-radius: 8px 8px 0 0;
+}
+ul.task-list li.completed, ul.task-list li:hover {
+    background-color: #242424;
+}
+ul.task-list li {
+    padding: 1.25rem 1rem;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
