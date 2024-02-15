@@ -26,22 +26,28 @@
             </div>
 
             <div class="task-box mt-3">
-                <ul class="task-list">
+                <ul class="task-list list-none p-0 m-0 max-h-[500px] overflow-y-scroll flex flex-col">
                     @foreach(auth()->user()->tasks as $task)
-                        <li class="task-card {{ ($task->status === 'complete') ? 'completed' : '' }}" id="{{$task->id}}">
-                            <div class="d-flex">
-                                <i class="fa-light fa-circle-check"></i>
-                                <div class="date mb-auto ms-auto text-end">
-                                    <p class="mb-0">
+                        <li class="task-card {{ ($task->status === 'complete') ? 'completed' : '' }} border-b border-gray-100 dark:border-gray-700" id="{{$task->id}}">
+                            <div class="flex flex-col md:flex-row md:flex-wrap">
+                                <i class="fa-light fa-circle-check text-gray-400 mt-2"></i>
+                                <div class="text-white text-xl font-semibold ml-2">
+                                    <small class="mb-1">{{ $task->name }}</small>
+                                </div>
+                                <div class="date mb-auto ml-auto text-end">
+                                    <p class="text-white mb-3">
                                         Due {{ \Carbon\Carbon::parse($task->due_by)->diffForHumans(['parts' => 1]) }}</p>
                                     <span
-                                        class="badge bg-danger {{ (Carbon\Carbon::parse($task->due_by)->isPast()) ? '' : 'd-none' }}">Overdue</span>
+                                        class="bg-red-700 text-white p-1 rounded font-semibold text-sm {{ (Carbon\Carbon::parse($task->due_by)->isPast()) ? '' : 'hidden' }}">Overdue</span>
+                                   @if($task->status === 'completed')
                                     <span
-                                        class="badge bg-success {{ ($task->due_by) ?? 'd-none' }}">Completed</span>
+                                        class="badge bg-success">Completed</span>
+                                    @endif
                                 </div>
-                            </div>
-                            <div class="task-desc w-100 mt-1">
-                                <p class="mb-0">{{$task->description}}</p>
+
+                                <div class="task-desc w-full mt-1">
+                                    <p class="font-regular text-md text-gray-800 dark:text-gray-300">{{$task->description}}</p>
+                                </div>
                             </div>
                         </li>
                     @endforeach
