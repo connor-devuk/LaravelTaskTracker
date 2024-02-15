@@ -24,6 +24,29 @@
                 </h4>
                 <x-primary-button class="ms-auto my-auto" x-data="" x-on:click.prevent="$dispatch('open-modal', 'create-task')">{{ __('Create Task') }}</x-primary-button>
             </div>
+
+            <div class="task-box mt-3">
+                <ul class="task-list">
+                    @foreach(auth()->user()->tasks as $task)
+                        <li class="task-card {{ ($task->status === 'complete') ? 'completed' : '' }}" id="{{$task->id}}">
+                            <div class="d-flex">
+                                <i class="fa-light fa-circle-check"></i>
+                                <div class="date mb-auto ms-auto text-end">
+                                    <p class="mb-0">
+                                        Due {{ \Carbon\Carbon::parse($task->due_by)->diffForHumans(['parts' => 1]) }}</p>
+                                    <span
+                                        class="badge bg-danger {{ (Carbon\Carbon::parse($task->due_by)->isPast()) ? '' : 'd-none' }}">Overdue</span>
+                                    <span
+                                        class="badge bg-success {{ ($task->due_by) ?? 'd-none' }}">Completed</span>
+                                </div>
+                            </div>
+                            <div class="task-desc w-100 mt-1">
+                                <p class="mb-0">{{$task->description}}</p>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -43,9 +66,10 @@
                     type="text"
                     class="mt-3 block w-3/4"
                     placeholder="{{ __('Cook dinner') }}"
+                    required
                 />
 
-                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+                <x-input-error :messages="$errors->userDeletion->get('title')" class="mt-2" />
             </div>
             <div class="mt-6">
                 <x-input-label for="description" value="{{ __('Description') }}"/>
@@ -56,9 +80,24 @@
                     type="text"
                     class="mt-3 block w-3/4"
                     placeholder="{{ __('Preheat the oven to 120 degrees and put pizza inside!') }}"
+                    required
                 />
 
-                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+                <x-input-error :messages="$errors->userDeletion->get('description')" class="mt-2"/>
+            </div>
+            <div class="mt-6">
+                <x-input-label for="due_by" value="{{ __('Due Date') }}"/>
+
+                <x-text-input
+                    id="due_by"
+                    name="due_by"
+                    type="date"
+                    class="mt-3 block w-3/4"
+                    placeholder="{{ __('DD/MM/YY') }}"
+                    required
+                />
+
+                <x-input-error :messages="$errors->userDeletion->get('due_by')" class="mt-2"/>
             </div>
 
             <div class="mt-6 flex justify-end">
