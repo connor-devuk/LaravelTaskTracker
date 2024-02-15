@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/tasks', [App\Http\Controllers\TaskController::class, 'store'])->middleware(['auth', 'verified'])->name('tasks.create');
+Route::patch('/tasks/{task}', [App\Http\Controllers\TaskController::class, 'edit'])->middleware(['auth', 'verified'])->name('tasks.update');
+Route::delete('/tasks/{task}', [App\Http\Controllers\TaskController::class, 'delete'])->middleware(['auth', 'verified'])->name('tasks.delete');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
